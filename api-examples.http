@@ -1,0 +1,107 @@
+### Login as employee
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "loginId": "EMP001",
+  "password": "emp123"
+}
+
+### Login as manager
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "loginId": "MGR001",
+  "password": "manager123"
+}
+
+### Get employees
+GET http://localhost:8080/api/employees
+
+### Get employees under manager Rajesh
+GET http://localhost:8080/api/employees/manager/1
+
+### Create out duty gatepass as Amit
+POST http://localhost:8080/api/gatepasses
+Content-Type: application/json
+X-Employee-Id: 4
+
+{
+  "gatepassType": "OUT_DUTY",
+  "requestDate": "2026-04-20",
+  "fromTime": "11:00:00",
+  "toTime": "16:00:00",
+  "outLocation": "Client Office",
+  "reason": "Client visit"
+}
+
+### Create plant-to-plant gatepass as Priya
+POST http://localhost:8080/api/gatepasses
+Content-Type: application/json
+X-Employee-Id: 5
+
+{
+  "gatepassType": "PLANT_TO_PLANT",
+  "requestDate": "2026-04-20",
+  "fromTime": "10:00:00",
+  "toTime": "13:00:00",
+  "fromPlantId": 1,
+  "toPlantId": 2,
+  "reason": "Maintenance coordination"
+}
+
+### Create half-day gatepass as Suresh
+POST http://localhost:8080/api/gatepasses
+Content-Type: application/json
+X-Employee-Id: 6
+
+{
+  "gatepassType": "HALF_DAY",
+  "requestDate": "2026-04-20",
+  "fromTime": "14:00:00",
+  "toTime": "18:00:00",
+  "halfDaySession": "SECOND_HALF",
+  "reason": "Personal work"
+}
+
+### Employee sees own requests
+GET http://localhost:8080/api/gatepasses/my
+X-Employee-Id: 4
+
+### Manager sees pending approvals
+GET http://localhost:8080/api/manager/gatepasses/pending
+X-Manager-Id: 1
+
+### Manager approves gatepass
+PUT http://localhost:8080/api/manager/gatepasses/1/approve
+Content-Type: application/json
+X-Manager-Id: 1
+
+{
+  "remarks": "Approved"
+}
+
+### Manager rejects gatepass
+PUT http://localhost:8080/api/manager/gatepasses/1/reject
+Content-Type: application/json
+X-Manager-Id: 1
+
+{
+  "remarks": "Rejected due to workload"
+}
+
+### HR sees all gatepasses
+GET http://localhost:8080/api/hr/gatepasses
+
+### HR sees gatepasses by date range
+GET http://localhost:8080/api/hr/gatepasses?fromDate=2026-04-01&toDate=2026-04-30
+
+### Security sees approved gatepasses
+GET http://localhost:8080/api/security/gatepasses/approved
+
+### Security checkout
+PUT http://localhost:8080/api/security/gatepasses/1/checkout
+
+### Security checkin
+PUT http://localhost:8080/api/security/gatepasses/1/checkin
